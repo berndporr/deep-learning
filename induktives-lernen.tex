@@ -16,7 +16,7 @@
 \renewcommand{\captionfont}{\small}
 
 \author{Bernd Porr}
-\title{Depp learning}
+\title{Induktives Lernen mit Neuronalen Netzwerken}
 
 \begin{document}
 
@@ -45,7 +45,7 @@ Gelernt werden soll eine bestimmte Ausgangsaktivitaet in Abhanengigkeit von eine
 Das wird erreicht, indem ein Fehler $e_i$ am Ausgang jedes Neurons etabliert wird, der dann die Gewichte $w_{ji}$
 schrittweise dorthin beweget, dass er im mittel Null wird:
 \begin{equation}
-  e_i = y_i - d_i \label{output error}
+  e_i = y_i - d_i \label{output_error}
 \end{equation}
 wobei $d_i$ der gewuenschte Ausgangswert ist und $y_i$ der Aktuelle.
 Ziel des Lernen ist es, dass das quadratische Mittel null wird:
@@ -86,6 +86,11 @@ durchfuehrt:
 \caption{Mehrschichtiges Feedforward Netz
 \label{multi_layer}}
 \end{figure}
+
+Abb.~\ref{multi_layer} zeigt nun ein Netzwerk mich versteckten Schichten, wo es
+nicht direkt klar ist, wie der Fehler $e_j$ berechnet werden kann. Hier kann
+man nicht einfach auf die Differenz zwischen $y_i$ und $d_i$ nehmen (siehe
+Gl.~\ref{output_error}). Die Frage 
 
 
 \end{document}
