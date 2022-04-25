@@ -83,7 +83,7 @@ das Gewicht wieder zu verringern. Wenn aber umgekehrt eine Erhöhung von $\omega
 Verringerung von $E$ bewirkt, dann ist das Vorteilhaft also kann man das Gewicht erhoehen.
 Iterativ wird also der Fehler $E$ verringert.
 
-Als naechsten Schritt muss nun die Lernregel hergeleitet werden. Das geschieht, indem die
+Als nächsten Schritt muss nun die Lernregel hergeleitet werden. Das geschieht, indem die
 Gln.~\ref{linear_sum}, \ref{output_error} und \ref{quaderr} in Gl.~\ref{graddes} einsetzt werden:
 \begin{eqnarray}
   \Delta\omega_{ji}
@@ -156,7 +156,7 @@ Wobei nun $e_j$ der interne Error ist und damit ist es möglich, alle internen F
 \section{Nicht-lineare Netzwerke}
 Nur wenn Netzwerke nicht-linear sind, machen tiefere Schichten einen
 Sinn, da jedes lineare Netzwerk immer auf eine Schicht reduziert
-werden können.  Erst die Nichtlinearität rechtfertigt tiefe (``deep'')
+werden kann.  Erst die Nichtlinearität rechtfertigt tiefe (``deep'')
 mehrschichtige Netzwerke.  Abb.~\ref{nonlin} zeigt ein Neuron von
 solch einem mehrschichtigen Netzwerk, wo die lineare Summe dann durch
 eine Nichtlinearität geschickt wird:
@@ -189,7 +189,7 @@ sein. Es hat sich aber herausgestellt, dass der Einweggleichrichter
   \end{cases}
 \end{equation}
 für viele Klassifizierungen am besten
-ist. Dessen Ableitung hat keine eindeutige Lösung am Ursprung so dass man dort
+ist. Dessen Ableitung hat keine eindeutige Lösung am Ursprung so dass man sich dort
 entscheiden muss, ob sie eins oder Null ist. Andere populäre nicht-lineare
 Funktionen sind $\Theta(v)=\tanh(v)$ oder die sigmoide Funktion: $\Theta(v)=\frac{1}{1+e^{-v}}$.
 
