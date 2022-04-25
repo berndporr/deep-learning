@@ -2,6 +2,7 @@
 \usepackage{caption}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{amsmath}
 \hypersetup{%
     pdfborder = {0 0 0}
 }
@@ -23,8 +24,13 @@
 \maketitle
 
 \section{Induktives lernen}
-Bekannt ist ein Datensatz $\vec{x}_1, \ldots, \vec{x}_N$, der mit einer unbekannten Funktion $\vec{y}=f(\vec{x})$ in einen Datensatz $\vec{y}$
-ueberfuerhrt wird. Das Ziel ist es, die Funktion $f$ iterativ mit Hilfe von Beispielen $\vec{x},\vec{y}$ zu lernen.
+Bekannt ist ein Datensatz $\vec{x}_1, \ldots, \vec{x}_N$, der mit einer unbekannten Funktion
+\begin{equation}
+  \vec{y}=f(\vec{x}) \label{inductive}
+\end{equation}
+in einen Datensatz $\vec{y}$
+überführt wird. Das Ziel ist es, die Funktion $f$ iterativ mit Hilfe von Beispielen $\vec{x},\vec{y}$ zu lernen, so dass dann
+neue $\vec{x}_{N+1}, \ldots$ korrekt in $\vec{y}=f(\vec{x})$ überführt werden.
 
 In den folgenden Abschnitten wird die Funktion $f$ durch immer komplexere neuronale Netzwerke gelernt und approximiert.
 
@@ -39,53 +45,55 @@ In den folgenden Abschnitten wird die Funktion $f$ durch immer komplexere neuron
 \end{figure}
 
 Abb.~\ref{one_layer}A zeigt ein einfaches lineares Neuron in einer
-einzigen Schicht. Die Aktivitaet des neurons ist $y$ und hat einen
-Index fuer dessen Position in der Schicht, wobei der index $i$ hier
-die Ausgangsschicht repreaesentiert. Die Eingangsaktivitaet $x_j =
-y_j$ wird mit $\omega_{ji}$ gewichtet und dann zum Ausgangssignal
-$y_i$ summiert:
+einzigen Schicht. Die Aktivität des Neurons ist $y(n)$ und hat einen
+Index für dessen Position in der Schicht, wobei der Index $i$ hier die
+Ausgangsschicht repräsentiert. $n$ ist der Momentane Zeitpunkt als
+Zeit-Index in einem getakteten System. Die Eingangsaktivität $x_j(n) =
+y_j(n)$ wird mit $\omega_{ji}$ gewichtet und dann zum Ausgangssignal
+$y_i(n)$ summiert:
 \begin{equation}
   y_i(n) = \sum_j y_j(n) w_{ji} \label{linear_sum}
 \end{equation}
-Die funktion $f$ ist hier also eine einfache lineare Kombination von den Eingangssignalen, wobei
-die Gewichte $\omega_{ji}$ gelernt werden muessen, um die spezifische Funktion $f$ zu approximieren.
+Die Funktion $f$ ist hier also eine einfache lineare Kombination von den Eingangssignalen, wobei
+die Gewichte $\omega_{ji}$ gelernt werden müssen, um die spezifische Funktion $f$ zu approximieren.
 
-Gelernt werden soll eine bestimmte Ausgangsaktivitaet in Abhanengigkeit von einer Eingangsaktivitaet.
-Das wird erreicht, indem ein Fehler $e_i$ am Ausgang jedes Neurons etabliert wird, der dann die Gewichte $w_{ji}$
-schrittweise dorthin beweget, dass er im mittel Null wird:
+Gelernt werden soll eine bestimmte Ausgangsaktivität in Abhängigkeit von einer Eingangsaktivität (Gl.~\ref{inductive}).
+Das wird erreicht, indem ein Fehler $e_i(n)$ am Ausgang jedes Neurons etabliert wird, der dann die Gewichte $w_{ji}$
+schrittweise dorthin bewegt, so dass er im Mittel Null wird:
 \begin{equation}
-  e_i = y_i - d_i \label{output_error}
+  e_i(n) = y_i(n) - d_i(n) \label{output_error}
 \end{equation}
-wobei $d_i$ der gewuenschte Ausgangswert ist und $y_i$ der Aktuelle.
-Ziel des Lernen ist es, dass das quadratische Mittel null wird:
+wobei $d_i(n)$ der gewünschte Ausgangswert ist und $y_i(n)$ der Aktuelle.
+Ziel des Lernens ist es, dass das quadratische Mittel vom Fehler Null wird:
 \begin{equation}
-  E = \frac{1}{2} e^2
+  E = \frac{1}{2} e^2 \label{quaderr}
 \end{equation}
 
-Der zentrale Trick ist nun, die Partielle Ableitung in Abhaengigkeit vom Fehler $E$ zu nehmen
-und damit die Gewichte zu veraendern:
+Der zentrale Trick ist nun, die Partielle Ableitung in Abhängigkeit vom Fehler $E$ zu nehmen
+und damit die Gewichte zu verändern:
 \begin{eqnarray}
   \Delta\omega_{ji} & = & - \mu \frac{\partial E}{\partial \omega_{ji}} \label{graddes} \\
   \omega_{ji} & \leftarrow & \omega_{ji} + \Delta\omega_{ji}
 \end{eqnarray}
-Warum macht das Sinn? In Abb.~\ref{one_layer}B ist die Abhaengigkeit von einem Gewicht
-$\omega_{ji}$ gezeigt. wenn in diesem Beispiel das Gewicht etwas erhoeht wird, dann
-wird der Fehler $E$ groesser also war die Erhoehung kontraproduktiv und es ist besser,
-das Gewicht zu verringern. Wenn aber umgekehrt eine Erhoehung von $\omega_{ji}$ eine
-Verringerung von E bewirkt, dann ist das Vorteilhaft also kann man das Gewicht erhoehen.
-Iterativ wird also der Fehler verringert.
+Warum macht das Sinn? In Abb.~\ref{one_layer}B ist die Abhängigkeit von einem Gewicht
+$\omega_{ji}$ gezeigt. Wenn in diesem Beispiel das Gewicht etwas erhöht wird, dann
+wird der Fehler $E$ größer. Also war die Erhöhung kontraproduktiv und es ist besser,
+das Gewicht wieder zu verringern. Wenn aber umgekehrt eine Erhöhung von $\omega_{ji}$ eine
+Verringerung von $E$ bewirkt, dann ist das Vorteilhaft also kann man das Gewicht erhoehen.
+Iterativ wird also der Fehler $E$ verringert.
 
-Als naechsten Schritt muss nun die Lernregel hergeleitet werden. Das geschieht, indem
-mein einfach Gl.~\ref{linear_sum} in Gl.~\ref{graddes} einsetzt und die Partiellen Ableitungen
-durchfuehrt:
+Als naechsten Schritt muss nun die Lernregel hergeleitet werden. Das geschieht, indem die
+Gln.~\ref{linear_sum}, \ref{output_error} und \ref{quaderr} in Gl.~\ref{graddes} einsetzt werden:
 \begin{eqnarray}
   \Delta\omega_{ji}
    & = & - \mu \frac{1}{2} \frac{\partial ( d_i(n) - y_i(n) )^2 }{\partial \omega_{ji}} \\
-   & = & - \mu \frac{1}{2} \frac{\partial ( d_i(n) - \left( \sum_j y_j(n) w_{ji} \right)^2 }{\partial \omega_{ji}} \\
+   & = & - \mu \frac{1}{2} \frac{\partial \left( d_i(n) - \sum_j y_j(n) w_{ji} \right)^2 }{\partial \omega_{ji}} \\
+  & = & \mu \underbrace{\left(d_i(n) - \sum_j y_j(n) w_{ji}\right)}_{-e_i(n)} \cdot y_j(n) \\
    & = & - \mu \underbrace{\frac{\partial E}{\partial y_i}}_{-e_i(n)} \underbrace{\frac{\partial y_i}{\partial \omega_{ji}}}_{y_j(n)} \label{chainrule}\\
-  & = & \mu \underbrace{\left(d_i(n) - \sum_j y_j(n) w_{ji}\right)}_{e_i(n)} \cdot y_j(n) \\
   & = & \mu \cdot e_i(n) \cdot y_j(n)
 \end{eqnarray}
+Die Lernregel ist also einfach die Multiplikation vom Fehler am Ausgang mit der Aktivität am Eingang. Dieses Produkt verändert
+dann das zugehörige Gewicht.
 
 \section{Mehrschichtiges lineares Netzwerk}
 \begin{figure}[!hbt]
@@ -98,40 +106,43 @@ durchfuehrt:
 
 Abb.~\ref{multi_layer} zeigt nun ein Netzwerk mit mehreren
 Schichten. Wie das Signal vom Eingang zum Ausgang durch die
-verschiedenen Schichten laeuft, ist einfach auszurechnen. Auch der
+verschiedenen Schichten läuft, ist einfach auszurechnen. Auch der
 Fehler $e_i$ in der Ausgangsschicht kann weiterhin einfach als
 Differenz zwischen $y_i$ und $d_i$ ausgerechnet werden (siehe
 Gl.~\ref{output_error}). Das Problem ist, wie die \textsl{internen} Fehler
-$e_j$ und $e_k$ ausgerechnet werden koennen.
-Der interne Fehler fuer $\omega_{kj}$ ist erstmal genauso definiert wie der Fehler
+$e_j$ und $e_k$ ausgerechnet werden können.
+Der interne Fehler für $\omega_{kj}$ ist erstmal genauso definiert wie der Fehler
 am Ausgang (siehe Gl.~\ref{chainrule}):
 \begin{equation}
   \frac{\partial E}{\partial \omega_{kj}} = \underbrace{\frac{\partial E}{\partial y_j}}_\textrm{Trick!} \frac{\partial y_j}{\partial \omega_{kj}}
   \label{gradint}
 \end{equation}
-Der Trick ist nun diesen Term mit Hilfe von $y_i$ auszudruecken und dann einfach die beiden Terme mit Gl.~\ref{linear_sum} und Gl.~\ref{chainrule} zu identifizieren:
+aber der ist ja nicht direkt verfügbar. Der Trick ist nun den Term
+$\frac{\partial E}{\partial y_j}$ mit Hilfe von der Aktivität $y_i$ am
+Ausgang auszudrücken und dann einfach die beiden Terme mit
+Gl.~\ref{linear_sum} und Gl.~\ref{chainrule} zu identifizieren:
 \begin{equation}
   \frac{\partial E}{\partial y_j} = \sum_i \underbrace{\frac{\partial E}{\partial y_i}}_{-e_i} \cdot \underbrace{\frac{\partial y_i}{\partial y_j}}_{\omega_{ji}} \label{dltrick}
 \end{equation}
 Gl.~\ref{dltrick} wieder in Gl.~\ref{gradint} substituiert gibt dann:
 \begin{equation}
   \frac{\partial E}{\partial \omega_{kj}} = - \left( \sum_i e_i \omega_{ji} \right) \frac{\partial y_j}{\partial \omega_{kj}}
-  \label{gradint}
+  \label{gradintback}
 \end{equation}
 mit
 \begin{equation}
 y_j = \sum_k y_k(n) w_{kj}
 \end{equation}
-und fuert zu:
+führt das zu:
 \begin{eqnarray}
-  \frac{\partial E}{\partial \omega_{kj}} & = & - \left( \sum_i e_i \omega_{ji} \right) \underbrace{\frac{\partial y_j}{\partial \omega_{kj}}}_{y_k} \\
+  \frac{\partial E}{\partial \omega_{kj}} & = & - \left( \sum_i e_i \omega_{ji} \right) \underbrace{\frac{\partial \left(\sum_k y_k(n) w_{kj}\right)}{\partial \omega_{kj}}}_{y_k} \\
                                          & = & - \left( \sum_i e_i \omega_{ji} \right) y_k
 \end{eqnarray}
-Die Aenderung des Gewichtes $\omega_{kj}$ folgt dann folgender Gleichung:
+Die Änderung des internen Gewichtes $\omega_{kj}$ folgt dann folgender Gleichung:
 \begin{equation}
 \Delta\omega_{kj} = \mu \cdot y_k \cdot \underbrace{\sum_i e_i \omega_{ji}}_{e_j}
 \end{equation}
-Wobei nun $e_j$ der interne Error ist und damit es moeglich ist, rueckwaerts vom Ausgang zum Eingang alle Fehler zu berechnen.
+Wobei nun $e_j$ der interne Error ist und damit ist es möglich, alle internen Fehler rückwärts vom Ausgang zum Eingang zu berechnen.
 
 \begin{figure}[!hbt]
 \begin{center}
@@ -142,29 +153,44 @@ Wobei nun $e_j$ der interne Error ist und damit es moeglich ist, rueckwaerts vom
 \end{figure}
 
 \section{Nicht-lineare Netzwerke}
-Nur wenn Netzwerke nicht-linear sind, machen tiefere Schichten einen Sinn, da jedes lineare Netzwerk immer auf eine Schicht reduziert werden kann.
-Erst die Nichtlinearitaet rechtfertigt ``Deep'' Netzwerke.
-Abb.~\ref{nonlin} zeigt ein Neuron von einem Netzwerk, wo die lineare Summe dann durch eine Nichtlinearitaet geschickt wird.
+Nur wenn Netzwerke nicht-linear sind, machen tiefere Schichten einen
+Sinn, da jedes lineare Netzwerk immer auf eine Schicht reduziert
+werden können.  Erst die Nichtlinearität rechtfertigt tiefe (``deep'')
+mehrschichtige Netzwerke.  Abb.~\ref{nonlin} zeigt ein Neuron von
+solch einem mehrschichtigen Netzwerk, wo die lineare Summe dann durch
+eine Nichtlinearität geschickt wird:
 \begin{equation}
-  y_i(n) = \Theta(\underbrace{\sum_j y_j(n) w_{ji}}_{v_i}) \label{linear_sum}
+  y_i(n) = \Theta\left(\underbrace{\sum_j y_j(n) w_{ji}}_{v_i} \right) \label{nonlinear_sum}
 \end{equation}
 Was aendert sich in diesem Fall an den Lernregeln? Sehr wenig. Wenn man sich Gl.~\ref{chainrule} ansieht, merkt man, dass einfach
 ein weiterer Term durch die Kettenregel hinzukommt:
  \begin{equation}
  \frac{\partial E}{\partial \omega_{ji}}  = \frac{\partial E}{\partial y_i} \underbrace{\frac{\partial y_i}{\partial v_i}}_{\Theta^\prime} \frac{\partial v_i}{\partial \omega_{ji}}
  \end{equation}
- wo $\Theta^\prime$ einfach die Ableitung der nicht-linearen Aktivierungsfunktion $\Theta$ ist. Das heisst, dass der Fehler fuer die
- Ausgangsschicht jetzt folgendermassen ausgerechent wird:
+ wo $\Theta^\prime$ einfach die Ableitung der nicht-linearen Aktivierungsfunktion $\Theta$ ist. Das heißt, dass der Fehler für die
+ Ausgangsschicht jetzt folgendermaßen ausgerechnet wird:
 \begin{equation}
   \Delta\omega_{ji} = \mu \cdot \Theta^\prime(y_i) \cdot y_j \cdot e_i 
 \end{equation}
-und der interne Fehler:
+und der interne Fehler so:
 \begin{equation}
 \Delta\omega_{kj} = \mu \cdot \Theta^\prime(y_j) \cdot y_k \cdot \underbrace{\sum_i e_i \omega_{ji}}_{e_j} 
 \end{equation}
 
-
-
+Strikt muss die nicht-lineare Funktion $\Theta$ differenzierbar
+sein. Es hat sich aber herausgestellt, dass der Einweggleichrichter
+(Rectifiying Linear Unit = ReLU)
+\begin{equation}
+  \Theta(v) =
+  \begin{cases}
+    0, & \text{falls}\ v < 0 \\
+    v, & \text{ansonsten}
+  \end{cases}
+\end{equation}
+für viele Klassifizierungen am besten
+ist. Dessen Ableitung hat keine eindeutige Lösung am Ursprung so dass man dort
+entscheiden muss, ob sie eins oder Null ist. Andere populäre nicht-lineare
+Funktionen sind $\Theta(v)=\tanh(v)$ oder die sigmoide Funktion: $\Theta(v)=\frac{1}{1+e^{-v}}$.
 
 
 
