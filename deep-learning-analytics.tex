@@ -3,7 +3,6 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{amsmath}
-\usepackage[german]{babel}
 \hypersetup{%
     pdfborder = {0 0 0}
 }
@@ -18,85 +17,87 @@
 \renewcommand{\captionfont}{\small}
 
 \author{Bernd Porr}
-\title{Induktives Lernen anhand neuronaler Netze}
+\title{Deep learning}
 
 \begin{document}
 
 \maketitle
 
-\section{Induktives lernen}
-Bekannt ist ein Datensatz $\vec{x}_1, \ldots, \vec{x}_N$, der mit einer unbekannten Funktion
+\section{Inductive learning with Deep Learning}
+We have a dataset $\vec{x}_1, \ldots, \vec{x}_N$ which should be converted
+via the function
 \begin{equation}
   \vec{y}=f(\vec{x}) \label{inductive}
 \end{equation}
-in einen Datensatz $\vec{y}$
-überführt wird. Das Ziel ist es, die Funktion $f$ iterativ mit Hilfe von Beispielen $\vec{x},\vec{y}$ zu lernen, so dass dann
-neue $\vec{x}_{N+1}, \ldots$ korrekt in $\vec{y}=f(\vec{x})$ überführt werden.
+into $\vec{y}$.  The goal is to learn this function with the help of
+examples $\vec{x},\vec{y}$ $\vec{x}_{N+1},\vec{y}_{N+1} \ldots$.
 
-In den folgenden Abschnitten wird die Funktion $f$ durch immer komplexere neuronale Netzwerke gelernt und approximiert.
+The following sections how learning of $f$ can be achieved.
 
-\section{Lineares Neuron}
+\section{Linear neuron}
 
 \begin{figure}[!hbt]
 \begin{center}
 \mbox{\includegraphics[width=\textwidth]{one_layer}}
 \end{center}
-\caption{Einfaches lineares Neuron
+\caption{Simple linear neuron
 \label{one_layer}}
 \end{figure}
 
-Abb.~\ref{one_layer}A zeigt ein einfaches lineares Neuron in einer
-einzigen Schicht. Die Aktivität des Neurons ist $y(n)$ und hat einen
-Index für dessen Position in der Schicht, wobei der Index $i$ hier die
-Ausgangsschicht repräsentiert. $n$ ist der Momentane Zeitpunkt als
-Zeit-Index in einem getakteten System. Die Eingangsaktivität $x_j(n) =
-y_j(n)$ wird mit $\omega_{ji}$ gewichtet und dann zum Ausgangssignal
-$y_i(n)$ summiert:
+Fig.~\ref{one_layer}A shows a Neuron in a single layer.
+Its activation is $y(n)$ und its position $i$ in this layer which is its output.
+$n$ is the current time-sample. The input activity to the neuron $x_j(n) =
+y_j(n)$ is weighted by $\omega_{ji}$ and summed up to:
 \begin{equation}
   y_i(n) = \sum_j y_j(n) w_{ji} \label{linear_sum}
 \end{equation}
-Die Funktion $f$ ist hier also eine einfache lineare Kombination von den Eingangssignalen, wobei
-die Gewichte $\omega_{ji}$ gelernt werden müssen, um die spezifische Funktion $f$ zu approximieren.
+The function $f$ is here a simple linear combination of input activities where
+$\omega_{ji}$ had to be learned to approximate $f$.
 
-Gelernt werden soll eine bestimmte Ausgangsaktivität in Abhängigkeit von einer Eingangsaktivität (Gl.~\ref{inductive}).
-Das wird erreicht, indem ein Fehler $e_i(n)$ am Ausgang jedes Neurons etabliert wird, der dann die Gewichte $w_{ji}$
-schrittweise dorthin bewegt, so dass er im Mittel Null wird:
+\section{The error signal}
+The task is to learn the function $f$ which converts the input activities to output activities
+(Eq.~\ref{inductive}).
+This is achived by minimising the error:
 \begin{equation}
   e_i(n) = y_i(n) - d_i(n) \label{output_error}
 \end{equation}
-wobei $d_i(n)$ der gewünschte Ausgangswert ist und $y_i(n)$ der Aktuelle.
-Ziel des Lernens ist es, dass das quadratische Mittel vom Fehler Null wird:
+where $d_i(n)$ is the desired value and $y_i(n)$ the actual output given a certain input $y_j(n)$.
+The goal is to minimise the square of the error:
 \begin{equation}
   E = \frac{1}{2} e^2 \label{quaderr}
 \end{equation}
 
-Der zentrale Trick ist nun, die Partielle Ableitung in Abhängigkeit vom Fehler $E$ zu nehmen
-und damit die Gewichte zu verändern:
+\section{Gradient descent}
+The central trick here is to take the partial derivative in respect to the weights $\omega_{ji}$
 \begin{eqnarray}
   \Delta\omega_{ji} & = & - \mu \frac{\partial E}{\partial \omega_{ji}} \label{graddes} \\
   \omega_{ji} & \leftarrow & \omega_{ji} + \Delta\omega_{ji}
 \end{eqnarray}
-Warum macht das Sinn? In Abb.~\ref{one_layer}B ist die Abhängigkeit von einem Gewicht
-$\omega_{ji}$ gezeigt. Wenn in diesem Beispiel das Gewicht etwas erhöht wird, dann
-wird der Fehler $E$ größer. Also war die Erhöhung kontraproduktiv und es ist besser,
-das Gewicht wieder zu verringern. Wenn aber umgekehrt eine Erhöhung von $\omega_{ji}$ eine
-Verringerung von $E$ bewirkt, dann ist das Vorteilhaft also kann man das Gewicht erhoehen.
-Iterativ wird also der Fehler $E$ verringert.
+Why does that make sense? Fig.~\ref{one_layer}B shows the relationship between error $E$ weight 
+$\omega_{ji}$. In this example if the weight is slightly increased the squared error
+is also increased which is not desired. Thus, it's better to decrease the weight again.
+However, if increasing $\omega_{ji}$ reduces the squared error $E$ then it's a good idea
+to keep that change of the weight. This approach is called \textsl{gradient descent}.
 
-Als nächsten Schritt muss nun die Lernregel hergeleitet werden. Das geschieht, indem die
-Gln.~\ref{linear_sum}, \ref{output_error} und \ref{quaderr} in Gl.~\ref{graddes} einsetzt werden:
+\section{Learning rule for the single layer}
+We can now derive the learning rule which changes the weights $\omega_{ji}$.
+We simply insert Eq.~\ref{linear_sum}, \ref{output_error} und \ref{quaderr} into Eq.~\ref{graddes}:
 \begin{eqnarray}
   \Delta\omega_{ji}
    & = & - \mu \frac{1}{2} \frac{\partial ( d_i(n) - y_i(n) )^2 }{\partial \omega_{ji}} \\
    & = & - \mu \frac{1}{2} \frac{\partial \left( d_i(n) - \sum_j y_j(n) w_{ji} \right)^2 }{\partial \omega_{ji}} \\
   & = & \mu \underbrace{\left(d_i(n) - \sum_j y_j(n) w_{ji}\right)}_{-e_i(n)} \cdot y_j(n) \\
    & = & - \mu \underbrace{\frac{\partial E}{\partial y_i}}_{-e_i(n)} \underbrace{\frac{\partial y_i}{\partial \omega_{ji}}}_{y_j(n)} \label{chainrule}\\
-  & = & \mu \cdot e_i(n) \cdot y_j(n)
+  & = & \mu \cdot e_i(n) \cdot y_j(n) \label{learningrule}
 \end{eqnarray}
-Die Lernregel ist also einfach die Multiplikation vom Fehler am Ausgang mit der Aktivität am Eingang. Dieses Produkt verändert
-dann das zugehörige Gewicht.
+where $\mu < 1$ is the learning rate or the ``step change'' so the
+amount of weight change for every learning step. The learning rate is
+usually very small. The learning rule Eq.\label{learningrule} is
+simply a multiplication of the input activity $y_j(n)$ with the error
+$e_i(n)$.
 
-\section{Mehrschichtiges lineares Netzwerk}
+
+\section{Multi-layer network}
 \begin{figure}[!hbt]
 \begin{center}
 \mbox{\includegraphics[width=\textwidth]{multi_layer}}
