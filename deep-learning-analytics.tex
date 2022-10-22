@@ -30,9 +30,10 @@ via the function
   \vec{y}=f(\vec{x}) \label{inductive}
 \end{equation}
 into $\vec{y}$.  The goal is to learn this function with the help of
-examples $\vec{x},\vec{y}$ $\vec{x}_{N+1},\vec{y}_{N+1} \ldots$.
+examples $\vec{x}_1,\vec{y}_1$; $\vec{x}_2,\vec{y}_2; \ldots$.
 
-The following sections how learning of $f$ can be achieved.
+The following sections show how learning of $f$ with the help
+fo examples can be achieved. This is called ``inductive learning''.
 
 \section{Linear neuron}
 
@@ -44,24 +45,25 @@ The following sections how learning of $f$ can be achieved.
 \label{one_layer}}
 \end{figure}
 
-Fig.~\ref{one_layer}A shows a Neuron in a single layer.
-Its activation is $y(n)$ und its position $i$ in this layer which is its output.
-$n$ is the current time-sample. The input activity to the neuron $x_j(n) =
+Fig.~\ref{one_layer}A shows a neuron in a single layer.
+Its activation is $y(n)$ and is the $i$th neurn in this layer.
+$n$ is the current time-stamp. The input activity to the neuron $x_j(n) =
 y_j(n)$ is weighted by $\omega_{ji}$ and summed up to:
 \begin{equation}
   y_i(n) = \sum_j y_j(n) w_{ji} \label{linear_sum}
 \end{equation}
-The function $f$ is here a simple linear combination of input activities where
-$\omega_{ji}$ had to be learned to approximate $f$.
+Our function $f$ from the introduction is here a simple linear
+combination of input activities where $\omega_{ji}$ had to be learned
+to approximate $f$.
 
 \section{The error signal}
-The task is to learn the function $f$ which converts the input activities to output activities
+The task is to learn a function $f$ which converts the input activities to output activities
 (Eq.~\ref{inductive}).
 This is achived by minimising the error:
 \begin{equation}
   e_i(n) = y_i(n) - d_i(n) \label{output_error}
 \end{equation}
-where $d_i(n)$ is the desired value and $y_i(n)$ the actual output given a certain input $y_j(n)$.
+where $d_i(n)$ is the desired output value and $y_i(n)$ the actual output value.
 The goal is to minimise the square of the error:
 \begin{equation}
   E = \frac{1}{2} e^2 \label{quaderr}
@@ -73,15 +75,18 @@ The central trick here is to take the partial derivative in respect to the weigh
   \Delta\omega_{ji} & = & - \mu \frac{\partial E}{\partial \omega_{ji}} \label{graddes} \\
   \omega_{ji} & \leftarrow & \omega_{ji} + \Delta\omega_{ji}
 \end{eqnarray}
-Why does that make sense? Fig.~\ref{one_layer}B shows the relationship between error $E$ weight 
-$\omega_{ji}$. In this example if the weight is slightly increased the squared error
-is also increased which is not desired. Thus, it's better to decrease the weight again.
-However, if increasing $\omega_{ji}$ reduces the squared error $E$ then it's a good idea
-to keep that change of the weight. This approach is called \textsl{gradient descent}.
+Why does this make sense? Fig.~\ref{one_layer}B shows the relationship
+between the error $E$ and the weight $\omega_{ji}$. In this example if
+the weight is slightly increased the squared error is also increased
+which is not desirable.  However, if increasing $\omega_{ji}$ reduces
+the squared error $E$ then it's a good idea to keep changing the
+weight in this direction. This approach is called \textsl{gradient
+  descent}.
 
 \section{Learning rule for the single layer}
-We can now derive the learning rule which changes the weights $\omega_{ji}$.
-We simply insert Eq.~\ref{linear_sum}, \ref{output_error} und \ref{quaderr} into Eq.~\ref{graddes}:
+We can now derive the learning rule which changes the weights
+$\omega_{ji}$.  We simply insert Eq.~\ref{linear_sum},
+\ref{output_error} and \ref{quaderr} into Eq.~\ref{graddes}:
 \begin{eqnarray}
   \Delta\omega_{ji}
    & = & - \mu \frac{1}{2} \frac{\partial ( d_i(n) - y_i(n) )^2 }{\partial \omega_{ji}} \\
@@ -90,11 +95,9 @@ We simply insert Eq.~\ref{linear_sum}, \ref{output_error} und \ref{quaderr} into
    & = & - \mu \underbrace{\frac{\partial E}{\partial y_i}}_{-e_i(n)} \underbrace{\frac{\partial y_i}{\partial \omega_{ji}}}_{y_j(n)} \label{chainrule}\\
   & = & \mu \cdot e_i(n) \cdot y_j(n) \label{learningrule}
 \end{eqnarray}
-where $\mu < 1$ is the learning rate or the ``step change'' so the
-amount of weight change for every learning step. The learning rate is
-usually very small. The learning rule Eq.~\ref{learningrule} is
-simply a multiplication of the input activity $y_j(n)$ with the error
-$e_i(n)$.
+where $\mu << 1$ is the learning rate or the ``step change''. The
+learning rule Eq.~\ref{learningrule} is simply a multiplication of the
+input activity $y_j(n)$ with the error $e_i(n)$.
 
 
 \section{Multi-layer network: error backpropagation and learning rule}
@@ -108,10 +111,10 @@ $e_i(n)$.
 
 Fig.~\ref{multi_layer} shows now a network with multiple layers.
 The forward progression of the signals $y_j$ from the input to
-the output follows exactly the same rules as for the single
+the output and follows exactly the same recipe as for the single
 layer network above using Eq.~\ref{linear_sum}.
 Also the error $e_i$ at the output layer can simply be calculated
-as the difference between $y_i$ und $d_i$ (see
+as the difference between the actual output $y_i$ and the desired output $d_i$ (see
 Eq.~\ref{output_error}). The problem is how to calculate the
 internal errors $e_j$ und $e_k$ and how they change the hidden weights $\omega_{kj}$
 (see Eq.~\ref{chainrule}):
@@ -119,9 +122,10 @@ internal errors $e_j$ und $e_k$ and how they change the hidden weights $\omega_{
   \frac{\partial E}{\partial \omega_{kj}} = \underbrace{\frac{\partial E}{\partial y_j}}_\textrm{trick!} \frac{\partial y_j}{\partial \omega_{kj}}
   \label{gradint}
 \end{equation}
-The central trick is to express 
-$\frac{\partial E}{\partial y_j}$ with the help of the activities $y_i$ at the output und then to identify the
-resulting terms with our linear sum Eq.~\ref{linear_sum} and the chain rule Eq.~\ref{chainrule}:
+The central trick here is to express $\frac{\partial E}{\partial y_j}$
+with the help of the activities $y_i$ at the output und then to
+identify the resulting terms with our linear sum Eq.~\ref{linear_sum}
+and the chain rule Eq.~\ref{chainrule}:
 \begin{equation}
   \frac{\partial E}{\partial y_j} = \sum_i \underbrace{\frac{\partial E}{\partial y_i}}_{-e_i} \cdot \underbrace{\frac{\partial y_i}{\partial y_j}}_{\omega_{ji}} \label{dltrick}
 \end{equation}
@@ -143,9 +147,10 @@ The change of the internal weight $\omega_{kj}$ leads then to:
 \begin{equation}
 \Delta\omega_{kj} = \mu \cdot y_k \cdot \underbrace{\sum_i e_i \omega_{ji}}_{e_j}
 \end{equation}
-where $e_j$ is the internal error and we can now use this recipe to calculate all internal errors.
-This is called \textsl{error backpropagation} which now allows to establish networks with an arbitrary number
-of layers.
+where $e_j$ is the internal error and we can now use this recipe to
+calculate all internal errors.  This is called \textsl{error
+  backpropagation} which now allows to establish networks with an
+arbitrary number of layers.
 
 \begin{figure}[!hbt]
 \begin{center}
@@ -156,8 +161,8 @@ of layers.
 \end{figure}
 
 \section{Non-linear networks}
-Only if the computations in the separate neurons are non-linear
-deeper networks make sense. Any linear deep network can be
+Only if computations in the separate neurons are non-linear
+deeper networks make sense. Any linear deep network could always be
 reduced to a single layer network rendering any deeper network
 pointless. Consequently, we need to introduce now non-linearities.
 Fig.~\ref{nonlin} shows a non-linear neuron which is the central building block
@@ -168,7 +173,7 @@ which we call activation function:
 \end{equation}
 
 The crucial question is if the introduction of the activation function
-changes the learning rule. Luckily not much changes.
+changes the learning rule. Luckily not much.
 Looking at Eq.~\ref{chainrule} it becomes directly clear that the
 chain rule is simply expanded by another term:
  \begin{equation}
