@@ -92,12 +92,12 @@ We simply insert Eq.~\ref{linear_sum}, \ref{output_error} und \ref{quaderr} into
 \end{eqnarray}
 where $\mu < 1$ is the learning rate or the ``step change'' so the
 amount of weight change for every learning step. The learning rate is
-usually very small. The learning rule Eq.\label{learningrule} is
+usually very small. The learning rule Eq.~\ref{learningrule} is
 simply a multiplication of the input activity $y_j(n)$ with the error
 $e_i(n)$.
 
 
-\section{Multi-layer network}
+\section{Multi-layer network: error backpropagation and learning rule}
 \begin{figure}[!hbt]
 \begin{center}
 \mbox{\includegraphics[width=\textwidth]{multi_layer}}
@@ -106,45 +106,46 @@ $e_i(n)$.
 \label{multi_layer}}
 \end{figure}
 
-Abb.~\ref{multi_layer} zeigt nun ein Netzwerk mit mehreren
-Schichten. Wie das Signal vom Eingang zum Ausgang durch die
-verschiedenen Schichten läuft, ist einfach auszurechnen. Auch der
-Fehler $e_i$ in der Ausgangsschicht kann weiterhin einfach als
-Differenz zwischen $y_i$ und $d_i$ ausgerechnet werden (siehe
-Gl.~\ref{output_error}). Das Problem ist, wie die \textsl{internen} Fehler
-$e_j$ und $e_k$ ausgerechnet werden können.
-Der interne Fehler für $\omega_{kj}$ ist erstmal genauso definiert wie der Fehler
-am Ausgang (siehe Gl.~\ref{chainrule}):
+Fig.~\ref{multi_layer} shows now a network with multiple layers.
+The forward progression of the signals $y_j$ from the input to
+the output follows exactly the same rules as for the single
+layer network above using Eq.~\ref{linear_sum}.
+Also the error $e_i$ at the output layer can simply be calculated
+as the difference between $y_i$ und $d_i$ (see
+Eq.~\ref{output_error}). The problem is how to calculate the
+internal errors $e_j$ und $e_k$ and how they change the hidden weights $\omega_{kj}$
+(see Eq.~\ref{chainrule}):
 \begin{equation}
-  \frac{\partial E}{\partial \omega_{kj}} = \underbrace{\frac{\partial E}{\partial y_j}}_\textrm{Trick!} \frac{\partial y_j}{\partial \omega_{kj}}
+  \frac{\partial E}{\partial \omega_{kj}} = \underbrace{\frac{\partial E}{\partial y_j}}_\textrm{trick!} \frac{\partial y_j}{\partial \omega_{kj}}
   \label{gradint}
 \end{equation}
-aber der ist ja nicht direkt verfügbar. Der Trick ist nun den Term
-$\frac{\partial E}{\partial y_j}$ mit Hilfe von der Aktivität $y_i$ am
-Ausgang auszudrücken und dann einfach die beiden Terme mit
-Gl.~\ref{linear_sum} und Gl.~\ref{chainrule} zu identifizieren:
+The central trick is to express 
+$\frac{\partial E}{\partial y_j}$ with the help of the activities $y_i$ at the output und then to identify the
+resulting terms with our linear sum Eq.~\ref{linear_sum} and the chain rule Eq.~\ref{chainrule}:
 \begin{equation}
   \frac{\partial E}{\partial y_j} = \sum_i \underbrace{\frac{\partial E}{\partial y_i}}_{-e_i} \cdot \underbrace{\frac{\partial y_i}{\partial y_j}}_{\omega_{ji}} \label{dltrick}
 \end{equation}
-Gl.~\ref{dltrick} wieder in Gl.~\ref{gradint} substituiert gibt dann:
+Eq.~\ref{dltrick} is again substituted into Eq.~\ref{gradint} which gives us:
 \begin{equation}
   \frac{\partial E}{\partial \omega_{kj}} = - \left( \sum_i e_i \omega_{ji} \right) \frac{\partial y_j}{\partial \omega_{kj}}
   \label{gradintback}
 \end{equation}
-mit
+with
 \begin{equation}
 y_j = \sum_k y_k(n) w_{kj}
 \end{equation}
-führt das zu:
+and leads to:
 \begin{eqnarray}
   \frac{\partial E}{\partial \omega_{kj}} & = & - \left( \sum_i e_i \omega_{ji} \right) \underbrace{\frac{\partial \left(\sum_k y_k(n) w_{kj}\right)}{\partial \omega_{kj}}}_{y_k} \\
                                          & = & - \left( \sum_i e_i \omega_{ji} \right) y_k
 \end{eqnarray}
-Die Änderung des internen Gewichtes $\omega_{kj}$ folgt dann folgender Gleichung:
+The change of the internal weight $\omega_{kj}$ leads then to:
 \begin{equation}
 \Delta\omega_{kj} = \mu \cdot y_k \cdot \underbrace{\sum_i e_i \omega_{ji}}_{e_j}
 \end{equation}
-Wobei nun $e_j$ der interne Error ist und damit ist es möglich, alle internen Fehler rückwärts vom Ausgang zum Eingang zu berechnen.
+where $e_j$ is the internal error and we can now use this recipe to calculate all internal errors.
+This is called \textsl{error backpropagation} which now allows to establish networks with an arbitrary number
+of layers.
 
 \begin{figure}[!hbt]
 \begin{center}
@@ -154,34 +155,38 @@ Wobei nun $e_j$ der interne Error ist und damit ist es möglich, alle internen F
 \label{nonlin}}
 \end{figure}
 
-\section{Nicht-lineare Netzwerke}
-Nur wenn Netzwerke nicht-linear sind, machen tiefere Schichten einen
-Sinn, da jedes lineare Netzwerk immer auf eine Schicht reduziert
-werden kann.  Erst die Nichtlinearität rechtfertigt tiefe (``deep'')
-mehrschichtige Netzwerke.  Abb.~\ref{nonlin} zeigt ein Neuron von
-solch einem mehrschichtigen Netzwerk, wo die lineare Summe dann durch
-eine Nichtlinearität geschickt wird:
+\section{Non-linear networks}
+Only if the computations in the separate neurons are non-linear
+deeper networks make sense. Any linear deep network can be
+reduced to a single layer network rendering any deeper network
+pointless. Consequently, we need to introduce now non-linearities.
+Fig.~\ref{nonlin} shows a non-linear neuron which is the central building block
+of any deep network where after the linear summation we introduce a non-linearity $\Theta$
+which we call activation function:
 \begin{equation}
   y_i(n) = \Theta\left(\underbrace{\sum_j y_j(n) w_{ji}}_{v_i} \right) \label{nonlinear_sum}
 \end{equation}
-Was aendert sich in diesem Fall an den Lernregeln? Sehr wenig. Wenn man sich Gl.~\ref{chainrule} ansieht, merkt man, dass einfach
-ein weiterer Term durch die Kettenregel hinzukommt:
+
+The crucial question is if the introduction of the activation function
+changes the learning rule. Luckily not much changes.
+Looking at Eq.~\ref{chainrule} it becomes directly clear that the
+chain rule is simply expanded by another term:
  \begin{equation}
  \frac{\partial E}{\partial \omega_{ji}}  = \frac{\partial E}{\partial y_i} \underbrace{\frac{\partial y_i}{\partial v_i}}_{\Theta^\prime} \frac{\partial v_i}{\partial \omega_{ji}}
  \end{equation}
- wo $\Theta^\prime$ einfach die Ableitung der nicht-linearen Aktivierungsfunktion $\Theta$ ist. Das heißt, dass der Fehler für die
- Ausgangsschicht jetzt folgendermaßen ausgerechnet wird:
+ where $\Theta^\prime$ is simply the derivative of the activation function $\Theta$. Consequently the
+ weight change at the output is now calculated as:
 \begin{equation}
   \Delta\omega_{ji} = \mu \cdot \Theta^\prime(y_i) \cdot y_j \cdot e_i 
 \end{equation}
-und der interne Fehler so:
+and the internal error as:
 \begin{equation}
 \Delta\omega_{kj} = \mu \cdot \Theta^\prime(y_j) \cdot y_k \cdot \underbrace{\sum_i e_i \omega_{ji}}_{e_j} 
 \end{equation}
 
-Strikt muss die nicht-lineare Funktion $\Theta$ differenzierbar
-sein. Es hat sich aber herausgestellt, dass der Einweggleichrichter
-(Rectifiying Linear Unit = ReLU)
+Strictly, the activation function needs to be differentiable. However,
+it turned out that the one way rectifier (Rectifiying Linear Unit = ReLU)
+works extremely well:
 \begin{equation}
   \Theta(v) =
   \begin{cases}
@@ -189,10 +194,9 @@ sein. Es hat sich aber herausgestellt, dass der Einweggleichrichter
     v, & \text{ansonsten}
   \end{cases}
 \end{equation}
-für viele Klassifizierungen am besten
-ist. Dessen Ableitung hat keine eindeutige Lösung am Ursprung so dass man sich dort
-entscheiden muss, ob sie eins oder Null ist. Andere populäre nicht-lineare
-Funktionen sind $\Theta(v)=\tanh(v)$ oder die sigmoide Funktion: $\Theta(v)=\frac{1}{1+e^{-v}}$.
+Its derivative has no definite solution at its origin so that one needs
+to decide if the derivative is zero there or one.
+Other popular activation functions are $\Theta(v)=\tanh(v)$ or $\Theta(v)=\frac{1}{1+e^{-v}}$.
 
 
 

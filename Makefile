@@ -1,3 +1,3 @@
 all:
-	pdflatex induktives-lernen
-	pdflatex induktives-lernen
+	pdflatex deep-learning-analytics
+	pdflatex deep-learning-analytics
