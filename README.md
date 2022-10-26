@@ -1,2 +1,6 @@
-# deep-learning
-Deep learning handout in German
+# Deep-learning
+
+The deep learning analytics showing the partial
+derivative tricks.
+
+[PDF](<./deep-learning-analytics.pdf>)
