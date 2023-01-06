@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>Gradient descent</TITLE>
+<META NAME="description" CONTENT="Gradient descent">
+<META NAME="keywords" CONTENT="deep-learning-analytics">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="deep-learning-analytics.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="deep-learning-analytics.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="node5.html">Learning rule for the</A>
+<B> Up:</B> <A
+ HREF="deep-learning-analytics.html">Deep learning</A>
+<B> Previous:</B> <A
+ HREF="node3.html">The error signal</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A ID="SECTION00040000000000000000">
+Gradient descent</A>
+</H1>
+The central trick here is to take the partial derivative in respect to the weights <!-- MATH
+ $\omega_{ji}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img12.svg"
+ ALT="$\omega_{ji}$"></SPAN>
+<BR>
+<DIV CLASS="displaymath"><A ID="graddes"></A><!-- MATH
+ \begin{eqnarray}
+\Delta\omega_{ji} & = & - \mu \frac{\partial E}{\partial \omega_{ji}}\\
+  \omega_{ji} & \leftarrow & \omega_{ji} + \Delta\omega_{ji}
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ STYLE="height: 2.53ex; vertical-align: -0.72ex; " SRC="img18.svg"
+ ALT="$\displaystyle \Delta\omega_{ji}$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.18ex; vertical-align: -0.09ex; " SRC="img19.svg"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 5.61ex; vertical-align: -2.27ex; " SRC="img20.svg"
+ ALT="$\displaystyle - \mu \frac{\partial E}{\partial \omega_{ji}}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">5</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img21.svg"
+ ALT="$\displaystyle \omega_{ji}$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.20ex; vertical-align: -0.09ex; " SRC="img22.svg"
+ ALT="$\displaystyle \leftarrow$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 2.53ex; vertical-align: -0.72ex; " SRC="img23.svg"
+ ALT="$\displaystyle \omega_{ji} + \Delta\omega_{ji}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">6</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL">
+
+Why does this make sense? Fig.&nbsp;<A HREF="node2.html#one_layer">1</A>B shows the relationship
+between the error <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.09ex; " SRC="img24.svg"
+ ALT="$E$"></SPAN> and the weight <!-- MATH
+ $\omega_{ji}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img12.svg"
+ ALT="$\omega_{ji}$"></SPAN>. In this example if
+the weight is slightly increased the squared error is also increased
+which is not desirable.  However, if increasing <!-- MATH
+ $\omega_{ji}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img12.svg"
+ ALT="$\omega_{ji}$"></SPAN> reduces
+the squared error <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.09ex; " SRC="img24.svg"
+ ALT="$E$"></SPAN> then it's a good idea to keep changing the
+weight in this direction. This approach is called <SPAN  CLASS="textsl">gradient
+  descent</SPAN>.
+
+<P>
+<BR><HR>
+<ADDRESS>
+<p><br /><a href="https://github.com/berndporr/deep-learning-analytics">github / contact</a><br /></p>
+</ADDRESS>
+</BODY>
+</HTML>

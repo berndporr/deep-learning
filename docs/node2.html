@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>Linear neuron</TITLE>
+<META NAME="description" CONTENT="Linear neuron">
+<META NAME="keywords" CONTENT="deep-learning-analytics">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="deep-learning-analytics.css">
+
+<LINK REL="next" HREF="node3.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="deep-learning-analytics.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="node3.html">The error signal</A>
+<B> Up:</B> <A
+ HREF="deep-learning-analytics.html">Deep learning</A>
+<B> Previous:</B> <A
+ HREF="node1.html">Motivation</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A ID="SECTION00020000000000000000">
+Linear neuron</A>
+</H1>
+
+<P>
+
+<DIV class="CENTER"><A ID="one_layer"></A><A ID="212"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure 1:</STRONG>
+Simple linear neuron
+</CAPTION>
+<TR><TD>
+<DIV class="CENTER">
+<IMG
+ STYLE="height: 27.36ex; vertical-align: -0.09ex; " SRC="img7.svg"
+ ALT="\includegraphics[width=\textwidth]{one_layer}">
+
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+Fig.&nbsp;<A HREF="#one_layer">1</A>A shows a neuron in a single layer (<A
+ HREF="node8.html#Rosenblatt58">Rosenblatt, 1958</A>).
+Its activation is <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.62ex; vertical-align: -0.66ex; " SRC="img8.svg"
+ ALT="$y(n)$"></SPAN> and is the <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.09ex; " SRC="img9.svg"
+ ALT="$i$"></SPAN>th neurn in this layer.
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.34ex; vertical-align: -0.09ex; " SRC="img10.svg"
+ ALT="$n$"></SPAN> is the current time-stamp. The input activity to the neuron <!-- MATH
+ $x_j(n) =
+y_j(n)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.68ex; vertical-align: -0.72ex; " SRC="img11.svg"
+ ALT="$x_j(n) =
+y_j(n)$"></SPAN> is weighted by <!-- MATH
+ $\omega_{ji}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img12.svg"
+ ALT="$\omega_{ji}$"></SPAN> and summed up to:
+<P></P>
+<DIV CLASS="displaymath"><A ID="linear_sum"></A><!-- MATH
+ \begin{equation}
+y_i(n) = \sum_j y_j(n) w_{ji}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 5.84ex; vertical-align: -3.21ex; " SRC="img13.svg"
+ ALT="$\displaystyle y_i(n) = \sum_j y_j(n) w_{ji}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">2</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+Our function <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.37ex; vertical-align: -0.53ex; " SRC="img6.svg"
+ ALT="$f$"></SPAN> from the introduction is here a simple linear
+combination of input activities where <!-- MATH
+ $\omega_{ji}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img12.svg"
+ ALT="$\omega_{ji}$"></SPAN> had to be learned
+to approximate <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.37ex; vertical-align: -0.53ex; " SRC="img6.svg"
+ ALT="$f$"></SPAN>.
+
+<P>
+<BR><HR>
+<ADDRESS>
+<p><br /><a href="https://github.com/berndporr/deep-learning-analytics">github / contact</a><br /></p>
+</ADDRESS>
+</BODY>
+</HTML>

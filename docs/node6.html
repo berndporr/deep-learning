@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+
+<!--Converted with LaTeX2HTML 2021.2 (Released July 1, 2021) -->
+<HTML lang="en">
+<HEAD>
+<TITLE>Multi-layer network: error backpropagation and learning rule</TITLE>
+<META NAME="description" CONTENT="Multi-layer network: error backpropagation and learning rule">
+<META NAME="keywords" CONTENT="deep-learning-analytics">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2021.2">
+
+<LINK REL="STYLESHEET" HREF="deep-learning-analytics.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A
+ HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="deep-learning-analytics.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="node7.html">Non-linear networks</A>
+<B> Up:</B> <A
+ HREF="deep-learning-analytics.html">Deep learning</A>
+<B> Previous:</B> <A
+ HREF="node5.html">Learning rule for the</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A ID="SECTION00060000000000000000">
+Multi-layer network: error backpropagation and learning rule</A>
+</H1>
+
+<DIV class="CENTER"><A ID="multi_layer"></A><A ID="221"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure 2:</STRONG>
+Multi-layer or deep neural network
+</CAPTION>
+<TR><TD>
+<DIV class="CENTER">
+<IMG
+ STYLE="height: 33.32ex; vertical-align: -0.09ex; " SRC="img33.svg"
+ ALT="\includegraphics[width=\textwidth]{multi_layer}">
+
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+Fig.&nbsp;<A HREF="#multi_layer">2</A> shows now a network with multiple layers.
+The forward progression of the signals <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img34.svg"
+ ALT="$y_j$"></SPAN> from the input to
+the output and follows exactly the same recipe as for the single
+layer network above using Eq.&nbsp;<A HREF="node2.html#linear_sum">2</A>.
+Also the error <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.68ex; vertical-align: -0.43ex; " SRC="img35.svg"
+ ALT="$e_i$"></SPAN> at the output layer can simply be calculated
+as the difference between the actual output <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.78ex; vertical-align: -0.53ex; " SRC="img36.svg"
+ ALT="$y_i$"></SPAN> and the desired output <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.27ex; vertical-align: -0.43ex; " SRC="img37.svg"
+ ALT="$d_i$"></SPAN> (see
+Eq.&nbsp;<A HREF="node3.html#output_error">3</A>). The problem is how to calculate the
+internal errors <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img38.svg"
+ ALT="$e_j$"></SPAN> und <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.68ex; vertical-align: -0.43ex; " SRC="img39.svg"
+ ALT="$e_k$"></SPAN> and how they change the hidden weights <!-- MATH
+ $\omega_{kj}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img40.svg"
+ ALT="$\omega_{kj}$"></SPAN>
+(see Eq.&nbsp;<A HREF="node5.html#chainrule">10</A>):
+<P></P>
+<DIV CLASS="displaymath"><A ID="gradint"></A><!-- MATH
+ \begin{equation}
+\frac{\partial E}{\partial \omega_{kj}} = \underbrace{\frac{\partial E}{\partial y_j}}_\textrm{trick!} \frac{\partial y_j}{\partial \omega_{kj}}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 8.64ex; vertical-align: -5.30ex; " SRC="img41.svg"
+ ALT="$\displaystyle \frac{\partial E}{\partial \omega_{kj}} = \underbrace{\frac{\partial E}{\partial y_j}}_\textrm{trick!} \frac{\partial y_j}{\partial \omega_{kj}}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">12</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+The central trick here is to express <!-- MATH
+ $\frac{\partial E}{\partial y_j}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 3.51ex; vertical-align: -1.32ex; " SRC="img42.svg"
+ ALT="$\frac{\partial E}{\partial y_j}$"></SPAN>
+with the help of the activities <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.78ex; vertical-align: -0.53ex; " SRC="img36.svg"
+ ALT="$y_i$"></SPAN> at the output und then to
+identify the resulting terms with our linear sum Eq.&nbsp;<A HREF="node2.html#linear_sum">2</A>
+and the chain rule Eq.&nbsp;<A HREF="node5.html#chainrule">10</A>:
+<P></P>
+<DIV CLASS="displaymath"><A ID="dltrick"></A><!-- MATH
+ \begin{equation}
+\frac{\partial E}{\partial y_j} = \sum_i \underbrace{\frac{\partial E}{\partial y_i}}_{-e_i} \cdot \underbrace{\frac{\partial y_i}{\partial y_j}}_{\omega_{ji}}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 9.02ex; vertical-align: -5.68ex; " SRC="img43.svg"
+ ALT="$\displaystyle \frac{\partial E}{\partial y_j} = \sum_i \underbrace{\frac{\parti...
+...y_i}}_{-e_i} \cdot \underbrace{\frac{\partial y_i}{\partial y_j}}_{\omega_{ji}}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">13</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+Eq.&nbsp;<A HREF="#dltrick">13</A> is again substituted into Eq.&nbsp;<A HREF="#gradint">12</A> which gives us:
+<P></P>
+<DIV CLASS="displaymath"><A ID="gradintback"></A><!-- MATH
+ \begin{equation}
+\frac{\partial E}{\partial \omega_{kj}} = - \left( \sum_i e_i \omega_{ji} \right) \frac{\partial y_j}{\partial \omega_{kj}}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 7.12ex; vertical-align: -2.92ex; " SRC="img44.svg"
+ ALT="$\displaystyle \frac{\partial E}{\partial \omega_{kj}} = - \left( \sum_i e_i \omega_{ji} \right) \frac{\partial y_j}{\partial \omega_{kj}}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">14</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+with
+<P></P>
+<DIV CLASS="displaymath"><!-- MATH
+ \begin{equation}
+y_j = \sum_k y_k(n) w_{kj}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 5.60ex; vertical-align: -2.97ex; " SRC="img45.svg"
+ ALT="$\displaystyle y_j = \sum_k y_k(n) w_{kj}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">15</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+and leads to:
+<BR>
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{eqnarray}
+\frac{\partial E}{\partial \omega_{kj}} & = & - \left( \sum_i e_i \omega_{ji} \right) \underbrace{\frac{\partial \left(\sum_k y_k(n) w_{kj}\right)}{\partial \omega_{kj}}}_{y_k} \\
+                                         & = & - \left( \sum_i e_i \omega_{ji} \right) y_k
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ STYLE="height: 5.61ex; vertical-align: -2.27ex; " SRC="img46.svg"
+ ALT="$\displaystyle \frac{\partial E}{\partial \omega_{kj}}$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.18ex; vertical-align: -0.09ex; " SRC="img19.svg"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 9.71ex; vertical-align: -5.53ex; " SRC="img47.svg"
+ ALT="$\displaystyle - \left( \sum_i e_i \omega_{ji} \right) \underbrace{\frac{\partial \left(\sum_k y_k(n) w_{kj}\right)}{\partial \omega_{kj}}}_{y_k}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">16</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT">&nbsp;</TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.18ex; vertical-align: -0.09ex; " SRC="img19.svg"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 7.12ex; vertical-align: -2.92ex; " SRC="img48.svg"
+ ALT="$\displaystyle - \left( \sum_i e_i \omega_{ji} \right) y_k$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">17</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL">
+
+The change of the internal weight <!-- MATH
+ $\omega_{kj}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img40.svg"
+ ALT="$\omega_{kj}$"></SPAN> leads then to:
+<P></P>
+<DIV CLASS="displaymath"><!-- MATH
+ \begin{equation}
+\Delta\omega_{kj} = \mu \cdot y_k \cdot \underbrace{\sum_i e_i \omega_{ji}}_{e_j}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 8.95ex; vertical-align: -6.34ex; " SRC="img49.svg"
+ ALT="$\displaystyle \Delta\omega_{kj} = \mu \cdot y_k \cdot \underbrace{\sum_i e_i \omega_{ji}}_{e_j}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">18</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+where <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img38.svg"
+ ALT="$e_j$"></SPAN> is the internal error and we can now use this recipe to
+calculate all internal errors.  This is called <SPAN  CLASS="textsl">error
+  backpropagation</SPAN> which now allows to establish networks with an
+arbitrary number of layers (<A ID="tex2html13" target="contents"
+  HREF="node8.html#Widrow60">Widrow and Hoff, 1960</A>; <A ID="tex2html14" target="contents"
+  HREF="node8.html#rumelhart1986learning">Rumelhart et&nbsp;al., 1986</A>).
+
+<P>
+
+<DIV class="CENTER"><A ID="nonlin"></A><A ID="235"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure 3:</STRONG>
+Neuron mit nichtlinearer Characteristik
+</CAPTION>
+<TR><TD>
+<DIV class="CENTER">
+<IMG
+ STYLE="height: 18.16ex; vertical-align: -0.09ex; " SRC="img50.svg"
+ ALT="\includegraphics[width=0.5\textwidth]{nonlin}">
+
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="node7.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="deep-learning-analytics.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="node5.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A
+ HREF="node7.html">Non-linear networks</A>
+<B> Up:</B> <A
+ HREF="deep-learning-analytics.html">Deep learning</A>
+<B> Previous:</B> <A
+ HREF="node5.html">Learning rule for the</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+<p><br /><a href="https://github.com/berndporr/deep-learning-analytics">github / contact</a><br /></p>
+</ADDRESS>
+</BODY>
+</HTML>
