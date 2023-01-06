@@ -15,22 +15,16 @@
 
 <LINK REL="STYLESHEET" HREF="deep-learning-analytics.css">
 
-<LINK REL="next" HREF="node1.html">
 </HEAD>
 
 <BODY >
 
 <DIV CLASS="navigation"><!--Navigation Panel-->
-<A
- HREF="node1.html">
-<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<IMG WIDTH="81" HEIGHT="24" ALT="next_inactive" SRC="nx_grp_g.png"> 
 <IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up_g.png"> 
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev_g.png">   
 <BR>
-<B> Next:</B> <A
- HREF="node1.html">Motivation</A>
-<BR>
-<BR></DIV>
+<BR><BR></DIV>
 <!--End of Navigation Panel-->
 
 <P>
@@ -40,32 +34,727 @@
 <HR>
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A ID="CHILD_LINKS"></A>
 
-<UL CLASS="ChildLinks">
-<LI><A ID="tex2html4"
-  HREF="node1.html">Motivation</A>
-<LI><A ID="tex2html5"
-  HREF="node2.html">Linear neuron</A>
-<LI><A ID="tex2html6"
-  HREF="node3.html">The error signal</A>
-<LI><A ID="tex2html7"
-  HREF="node4.html">Gradient descent</A>
-<LI><A ID="tex2html8"
-  HREF="node5.html">Learning rule for the single layer</A>
-<LI><A ID="tex2html9"
-  HREF="node6.html">Multi-layer network: error backpropagation and learning rule</A>
-<LI><A ID="tex2html10"
-  HREF="node7.html">Non-linear networks</A>
-<LI><A ID="tex2html11"
-  HREF="node8.html">References</A>
-<LI><A ID="tex2html12"
-  HREF="node9.html">About this document ...</A>
-</UL>
-<!--End of Table of Child-Links-->
-<BR><HR>
+<H1><A ID="SECTION00010000000000000000">
+Motivation</A>
+</H1>
+We have a dataset <!-- MATH
+ $\vec{x}_1, \ldots, \vec{x}_N$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.41ex; vertical-align: -0.53ex; " SRC="img1.svg"
+ ALT="$\vec{x}_1, \ldots, \vec{x}_N$"></SPAN> which should be converted
+via the function
+<P></P>
+<DIV CLASS="displaymath"><A ID="inductive"></A><!-- MATH
+ \begin{equation}
+\vec{y}=f(\vec{x})
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.62ex; vertical-align: -0.66ex; " SRC="img2.svg"
+ ALT="$\displaystyle \vec{y}=f(\vec{x})$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">1</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+into <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.41ex; vertical-align: -0.53ex; " SRC="img3.svg"
+ ALT="$\vec{y}$"></SPAN>. The goal is to learn this function with the help of
+examples <!-- MATH
+ $\vec{x}_1,\vec{y}_1$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.41ex; vertical-align: -0.53ex; " SRC="img4.svg"
+ ALT="$\vec{x}_1,\vec{y}_1$"></SPAN>; <!-- MATH
+ $\vec{x}_2,\vec{y}_2; \ldots$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.41ex; vertical-align: -0.53ex; " SRC="img5.svg"
+ ALT="$\vec{x}_2,\vec{y}_2; \ldots$"></SPAN>.
+
+<P>
+The following sections show how learning of <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.37ex; vertical-align: -0.53ex; " SRC="img6.svg"
+ ALT="$f$"></SPAN> with the help
+fo examples can be achieved. This is called &ldquo;inductive learning&rdquo;.
+
+<P>
+We 1st introduce a linear neuron, then deriving the math for a linear deep
+network and finally introducing non-linearities into the deep network.
+This allows to introduce the math in a more gradual way.
+
+<P>
+
+<H1><A ID="SECTION00020000000000000000">
+Linear neuron</A>
+</H1>
+
+<P>
+
+<DIV class="CENTER"><A ID="one_layer"></A><A ID="212"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure 1:</STRONG>
+Simple linear neuron
+</CAPTION>
+<TR><TD><DIV class="CENTER">
+<IMG
+ STYLE="height: 27.36ex; vertical-align: -0.09ex; " SRC="img7.svg"
+ ALT="\includegraphics[width=\textwidth]{one_layer}">
+
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+Fig.&nbsp;<A HREF="#one_layer">1</A>A shows a neuron in a single layer (<A
+ HREF="deep-learning-analytics.html#Rosenblatt58">Rosenblatt, 1958</A>).
+Its activation is <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.62ex; vertical-align: -0.66ex; " SRC="img8.svg"
+ ALT="$y(n)$"></SPAN> and is the <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.84ex; vertical-align: -0.09ex; " SRC="img9.svg"
+ ALT="$i$"></SPAN>th neurn in this layer.
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.34ex; vertical-align: -0.09ex; " SRC="img10.svg"
+ ALT="$n$"></SPAN> is the current time-stamp. The input activity to the neuron <!-- MATH
+ $x_j(n) =
+y_j(n)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.68ex; vertical-align: -0.72ex; " SRC="img11.svg"
+ ALT="$x_j(n) =
+y_j(n)$"></SPAN> is weighted by <!-- MATH
+ $\omega_{ji}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img12.svg"
+ ALT="$\omega_{ji}$"></SPAN> and summed up to:
+<P></P>
+<DIV CLASS="displaymath"><A ID="linear_sum"></A><!-- MATH
+ \begin{equation}
+y_i(n) = \sum_j y_j(n) w_{ji}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 5.84ex; vertical-align: -3.21ex; " SRC="img13.svg"
+ ALT="$\displaystyle y_i(n) = \sum_j y_j(n) w_{ji}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">2</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+Our function <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.37ex; vertical-align: -0.53ex; " SRC="img6.svg"
+ ALT="$f$"></SPAN> from the introduction is here a simple linear
+combination of input activities where <!-- MATH
+ $\omega_{ji}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img12.svg"
+ ALT="$\omega_{ji}$"></SPAN> had to be learned
+to approximate <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.37ex; vertical-align: -0.53ex; " SRC="img6.svg"
+ ALT="$f$"></SPAN>.
+
+<P>
+
+<H1><A ID="SECTION00030000000000000000">
+The error signal</A>
+</H1>
+The task is to learn a function <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.37ex; vertical-align: -0.53ex; " SRC="img6.svg"
+ ALT="$f$"></SPAN> which converts the input activities to output activities
+(Eq.&nbsp;<A HREF="#inductive">1</A>).
+This is achived by minimising the error:
+<P></P>
+<DIV CLASS="displaymath"><A ID="output_error"></A><!-- MATH
+ \begin{equation}
+e_i(n) = y_i(n) - d_i(n)
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.62ex; vertical-align: -0.66ex; " SRC="img14.svg"
+ ALT="$\displaystyle e_i(n) = y_i(n) - d_i(n)$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">3</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+where <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.62ex; vertical-align: -0.66ex; " SRC="img15.svg"
+ ALT="$d_i(n)$"></SPAN> is the desired output value and <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.62ex; vertical-align: -0.66ex; " SRC="img16.svg"
+ ALT="$y_i(n)$"></SPAN> the actual output value.
+The goal is to minimise the square of the error:
+<P></P>
+<DIV CLASS="displaymath"><A ID="quaderr"></A><!-- MATH
+ \begin{equation}
+E = \frac{1}{2} e^2
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 4.87ex; vertical-align: -1.64ex; " SRC="img17.svg"
+ ALT="$\displaystyle E = \frac{1}{2} e^2$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">4</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+
+<P>
+
+<H1><A ID="SECTION00040000000000000000">
+Gradient descent</A>
+</H1>
+The central trick here is to take the partial derivative in respect to the weights <!-- MATH
+ $\omega_{ji}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img12.svg"
+ ALT="$\omega_{ji}$"></SPAN>
+<BR>
+<DIV CLASS="displaymath"><A ID="graddes"></A><!-- MATH
+ \begin{eqnarray}
+\Delta\omega_{ji} & = & - \mu \frac{\partial E}{\partial \omega_{ji}}\\
+  \omega_{ji} & \leftarrow & \omega_{ji} + \Delta\omega_{ji}
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ STYLE="height: 2.53ex; vertical-align: -0.72ex; " SRC="img18.svg"
+ ALT="$\displaystyle \Delta\omega_{ji}$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.18ex; vertical-align: -0.09ex; " SRC="img19.svg"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 5.61ex; vertical-align: -2.27ex; " SRC="img20.svg"
+ ALT="$\displaystyle - \mu \frac{\partial E}{\partial \omega_{ji}}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">5</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img21.svg"
+ ALT="$\displaystyle \omega_{ji}$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.20ex; vertical-align: -0.09ex; " SRC="img22.svg"
+ ALT="$\displaystyle \leftarrow$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 2.53ex; vertical-align: -0.72ex; " SRC="img23.svg"
+ ALT="$\displaystyle \omega_{ji} + \Delta\omega_{ji}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">6</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL">
+
+Why does this make sense? Fig.&nbsp;<A HREF="#one_layer">1</A>B shows the relationship
+between the error <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.09ex; " SRC="img24.svg"
+ ALT="$E$"></SPAN> and the weight <!-- MATH
+ $\omega_{ji}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img12.svg"
+ ALT="$\omega_{ji}$"></SPAN>. In this example if
+the weight is slightly increased the squared error is also increased
+which is not desirable.  However, if increasing <!-- MATH
+ $\omega_{ji}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img12.svg"
+ ALT="$\omega_{ji}$"></SPAN> reduces
+the squared error <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.09ex; " SRC="img24.svg"
+ ALT="$E$"></SPAN> then it's a good idea to keep changing the
+weight in this direction. This approach is called <SPAN  CLASS="textsl">gradient
+  descent</SPAN>.
+
+<P>
+
+<H1><A ID="SECTION00050000000000000000">
+Learning rule for the single layer</A>
+</H1>
+We can now derive the learning rule which changes the weights
+<!-- MATH
+ $\omega_{ji}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img12.svg"
+ ALT="$\omega_{ji}$"></SPAN>.  We simply insert Eq.&nbsp;<A HREF="#linear_sum">2</A>,
+<A HREF="#output_error">3</A> and <A HREF="#quaderr">4</A> into Eq.&nbsp;<A HREF="#graddes">5</A>:
+<BR>
+<DIV CLASS="displaymath"><A ID="chainrule"></A><A ID="learningrule"></A><!-- MATH
+ \begin{eqnarray}
+\Delta\omega_{ji}
+   & = & - \mu \frac{1}{2} \frac{\partial ( d_i(n) - y_i(n) )^2 }{\partial \omega_{ji}} \\
+   & = & - \mu \frac{1}{2} \frac{\partial \left( d_i(n) - \sum_j y_j(n) w_{ji} \right)^2 }{\partial \omega_{ji}} \\
+  & = & \mu \underbrace{\left(d_i(n) - \sum_j y_j(n) w_{ji}\right)}_{-e_i(n)} \cdot y_j(n) \\
+   & = & - \mu \underbrace{\frac{\partial E}{\partial y_i}}_{-e_i(n)} \underbrace{\frac{\partial y_i}{\partial \omega_{ji}}}_{y_j(n)}\\
+  & = & \mu \cdot e_i(n) \cdot y_j(n)
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ STYLE="height: 2.53ex; vertical-align: -0.72ex; " SRC="img18.svg"
+ ALT="$\displaystyle \Delta\omega_{ji}$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.18ex; vertical-align: -0.09ex; " SRC="img19.svg"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 5.83ex; vertical-align: -2.27ex; " SRC="img25.svg"
+ ALT="$\displaystyle - \mu \frac{1}{2} \frac{\partial ( d_i(n) - y_i(n) )^2 }{\partial \omega_{ji}}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">7</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT">&nbsp;</TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.18ex; vertical-align: -0.09ex; " SRC="img19.svg"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 7.82ex; vertical-align: -2.27ex; " SRC="img26.svg"
+ ALT="$\displaystyle - \mu \frac{1}{2} \frac{\partial \left( d_i(n) - \sum_j y_j(n) w_{ji} \right)^2 }{\partial \omega_{ji}}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">8</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT">&nbsp;</TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.18ex; vertical-align: -0.09ex; " SRC="img19.svg"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 10.89ex; vertical-align: -6.71ex; " SRC="img27.svg"
+ ALT="$\displaystyle \mu \underbrace{\left(d_i(n) - \sum_j y_j(n) w_{ji}\right)}_{-e_i(n)} \cdot y_j(n)$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">9</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT">&nbsp;</TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.18ex; vertical-align: -0.09ex; " SRC="img19.svg"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 9.17ex; vertical-align: -5.83ex; " SRC="img28.svg"
+ ALT="$\displaystyle - \mu \underbrace{\frac{\partial E}{\partial y_i}}_{-e_i(n)} \underbrace{\frac{\partial y_i}{\partial \omega_{ji}}}_{y_j(n)}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">10</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT">&nbsp;</TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.18ex; vertical-align: -0.09ex; " SRC="img19.svg"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 2.68ex; vertical-align: -0.72ex; " SRC="img29.svg"
+ ALT="$\displaystyle \mu \cdot e_i(n) \cdot y_j(n)$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">11</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL">
+
+where <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.26ex; vertical-align: -0.53ex; " SRC="img30.svg"
+ ALT="$\mu &lt;&lt; 1$"></SPAN> is the learning rate or the &ldquo;step change&rdquo;. The
+learning rule Eq.&nbsp;<A HREF="#learningrule">11</A> is simply a multiplication of the
+input activity <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.68ex; vertical-align: -0.72ex; " SRC="img31.svg"
+ ALT="$y_j(n)$"></SPAN> with the error <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.62ex; vertical-align: -0.66ex; " SRC="img32.svg"
+ ALT="$e_i(n)$"></SPAN> (<A
+ HREF="deep-learning-analytics.html#Widrow60">Widrow and Hoff, 1960</A>).
+
+<P>
+
+<H1><A ID="SECTION00060000000000000000">
+Multi-layer network: error backpropagation and learning rule</A>
+</H1>
+
+<DIV class="CENTER"><A ID="multi_layer"></A><A ID="221"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure 2:</STRONG>
+Multi-layer or deep neural network
+</CAPTION>
+<TR><TD><DIV class="CENTER">
+<IMG
+  WIDTH="621" HEIGHT="282" STYLE=""
+ SRC="./multi_layer.png"
+ ALT="Image multi_layer">
+
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+Fig.&nbsp;<A HREF="#multi_layer">2</A> shows now a network with multiple layers.
+The forward progression of the signals <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img33.svg"
+ ALT="$y_j$"></SPAN> from the input to
+the output and follows exactly the same recipe as for the single
+layer network above using Eq.&nbsp;<A HREF="#linear_sum">2</A>.
+Also the error <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.68ex; vertical-align: -0.43ex; " SRC="img34.svg"
+ ALT="$e_i$"></SPAN> at the output layer can simply be calculated
+as the difference between the actual output <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.78ex; vertical-align: -0.53ex; " SRC="img35.svg"
+ ALT="$y_i$"></SPAN> and the desired output <SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.27ex; vertical-align: -0.43ex; " SRC="img36.svg"
+ ALT="$d_i$"></SPAN> (see
+Eq.&nbsp;<A HREF="#output_error">3</A>). The problem is how to calculate the
+internal errors <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img37.svg"
+ ALT="$e_j$"></SPAN> und <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.68ex; vertical-align: -0.43ex; " SRC="img38.svg"
+ ALT="$e_k$"></SPAN> and how they change the hidden weights <!-- MATH
+ $\omega_{kj}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img39.svg"
+ ALT="$\omega_{kj}$"></SPAN>
+(see Eq.&nbsp;<A HREF="#chainrule">10</A>):
+<P></P>
+<DIV CLASS="displaymath"><A ID="gradint"></A><!-- MATH
+ \begin{equation}
+\frac{\partial E}{\partial \omega_{kj}} = \underbrace{\frac{\partial E}{\partial y_j}}_\textrm{trick!} \frac{\partial y_j}{\partial \omega_{kj}}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 8.64ex; vertical-align: -5.30ex; " SRC="img40.svg"
+ ALT="$\displaystyle \frac{\partial E}{\partial \omega_{kj}} = \underbrace{\frac{\partial E}{\partial y_j}}_\textrm{trick!} \frac{\partial y_j}{\partial \omega_{kj}}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">12</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+The central trick here is to express <!-- MATH
+ $\frac{\partial E}{\partial y_j}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 3.51ex; vertical-align: -1.32ex; " SRC="img41.svg"
+ ALT="$\frac{\partial E}{\partial y_j}$"></SPAN>
+with the help of the activities <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.78ex; vertical-align: -0.53ex; " SRC="img35.svg"
+ ALT="$y_i$"></SPAN> at the output und then to
+identify the resulting terms with our linear sum Eq.&nbsp;<A HREF="#linear_sum">2</A>
+and the chain rule Eq.&nbsp;<A HREF="#chainrule">10</A>:
+<P></P>
+<DIV CLASS="displaymath"><A ID="dltrick"></A><!-- MATH
+ \begin{equation}
+\frac{\partial E}{\partial y_j} = \sum_i \underbrace{\frac{\partial E}{\partial y_i}}_{-e_i} \cdot \underbrace{\frac{\partial y_i}{\partial y_j}}_{\omega_{ji}}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 9.02ex; vertical-align: -5.68ex; " SRC="img42.svg"
+ ALT="$\displaystyle \frac{\partial E}{\partial y_j} = \sum_i \underbrace{\frac{\parti...
+...y_i}}_{-e_i} \cdot \underbrace{\frac{\partial y_i}{\partial y_j}}_{\omega_{ji}}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">13</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+Eq.&nbsp;<A HREF="#dltrick">13</A> is again substituted into Eq.&nbsp;<A HREF="#gradint">12</A> which gives us:
+<P></P>
+<DIV CLASS="displaymath"><A ID="gradintback"></A><!-- MATH
+ \begin{equation}
+\frac{\partial E}{\partial \omega_{kj}} = - \left( \sum_i e_i \omega_{ji} \right) \frac{\partial y_j}{\partial \omega_{kj}}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 7.12ex; vertical-align: -2.92ex; " SRC="img43.svg"
+ ALT="$\displaystyle \frac{\partial E}{\partial \omega_{kj}} = - \left( \sum_i e_i \omega_{ji} \right) \frac{\partial y_j}{\partial \omega_{kj}}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">14</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+with
+<P></P>
+<DIV CLASS="displaymath"><!-- MATH
+ \begin{equation}
+y_j = \sum_k y_k(n) w_{kj}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 5.60ex; vertical-align: -2.97ex; " SRC="img44.svg"
+ ALT="$\displaystyle y_j = \sum_k y_k(n) w_{kj}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">15</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+and leads to:
+<BR>
+<DIV CLASS="displaymath">
+<!-- MATH
+ \begin{eqnarray}
+\frac{\partial E}{\partial \omega_{kj}} & = & - \left( \sum_i e_i \omega_{ji} \right) \underbrace{\frac{\partial \left(\sum_k y_k(n) w_{kj}\right)}{\partial \omega_{kj}}}_{y_k} \\
+                                         & = & - \left( \sum_i e_i \omega_{ji} \right) y_k
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ STYLE="height: 5.61ex; vertical-align: -2.27ex; " SRC="img45.svg"
+ ALT="$\displaystyle \frac{\partial E}{\partial \omega_{kj}}$"></TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.18ex; vertical-align: -0.09ex; " SRC="img19.svg"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 9.71ex; vertical-align: -5.53ex; " SRC="img46.svg"
+ ALT="$\displaystyle - \left( \sum_i e_i \omega_{ji} \right) \underbrace{\frac{\partial \left(\sum_k y_k(n) w_{kj}\right)}{\partial \omega_{kj}}}_{y_k}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">16</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT">&nbsp;</TD>
+<TD WIDTH="10" ALIGN="CENTER" NOWRAP><IMG
+ STYLE="height: 1.18ex; vertical-align: -0.09ex; " SRC="img19.svg"
+ ALT="$\displaystyle =$"></TD>
+<TD ALIGN="LEFT" NOWRAP WIDTH="50%"><IMG
+ STYLE="height: 7.12ex; vertical-align: -2.92ex; " SRC="img47.svg"
+ ALT="$\displaystyle - \left( \sum_i e_i \omega_{ji} \right) y_k$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="arabic">17</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL">
+
+The change of the internal weight <!-- MATH
+ $\omega_{kj}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img39.svg"
+ ALT="$\omega_{kj}$"></SPAN> leads then to:
+<P></P>
+<DIV CLASS="displaymath"><!-- MATH
+ \begin{equation}
+\Delta\omega_{kj} = \mu \cdot y_k \cdot \underbrace{\sum_i e_i \omega_{ji}}_{e_j}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 8.95ex; vertical-align: -6.34ex; " SRC="img48.svg"
+ ALT="$\displaystyle \Delta\omega_{kj} = \mu \cdot y_k \cdot \underbrace{\sum_i e_i \omega_{ji}}_{e_j}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">18</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+where <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.97ex; vertical-align: -0.72ex; " SRC="img37.svg"
+ ALT="$e_j$"></SPAN> is the internal error and we can now use this recipe to
+calculate all internal errors.  This is called <SPAN  CLASS="textsl">error
+  backpropagation</SPAN> which now allows to establish networks with an
+arbitrary number of layers (<A ID="tex2html13" target="contents"
+  HREF="deep-learning-analytics.html#rumelhart1986learning">Rumelhart et&nbsp;al., 1986</A>; <A ID="tex2html14" target="contents"
+  HREF="deep-learning-analytics.html#Widrow60">Widrow and Hoff, 1960</A>).
+
+<P>
+
+<DIV class="CENTER"><A ID="nonlin"></A><A ID="235"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure 3:</STRONG>
+Neuron mit nichtlinearer Characteristik
+</CAPTION>
+<TR><TD><DIV class="CENTER">
+<IMG
+ STYLE="height: 18.16ex; vertical-align: -0.09ex; " SRC="img49.svg"
+ ALT="\includegraphics[width=0.5\textwidth]{nonlin}">
+
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<H1><A ID="SECTION00070000000000000000">
+Non-linear networks</A>
+</H1>
+Only if computations in the separate neurons are non-linear
+deeper networks make sense. Any linear deep network could always be
+reduced to a single layer network rendering any deeper network
+pointless. Consequently, we need to introduce now non-linearities.
+Fig.&nbsp;<A HREF="#nonlin">3</A> shows a non-linear neuron which is the central building block
+of any deep network where after the linear summation we introduce a non-linearity <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.09ex; " SRC="img50.svg"
+ ALT="$\Theta$"></SPAN>
+which we call activation function:
+<P></P>
+<DIV CLASS="displaymath"><A ID="nonlinear_sum"></A><!-- MATH
+ \begin{equation}
+y_i(n) = \Theta\left(\underbrace{\sum_j y_j(n) w_{ji}}_{v_i} \right)
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 13.96ex; vertical-align: -6.41ex; " SRC="img51.svg"
+ ALT="$\displaystyle y_i(n) = \Theta\left(\underbrace{\sum_j y_j(n) w_{ji}}_{v_i} \right)$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">19</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+
+<P>
+The crucial question is if the introduction of the activation function
+changes the learning rule. Luckily not much.
+Looking at Eq.&nbsp;<A HREF="#chainrule">10</A> it becomes directly clear that the
+chain rule is simply expanded by another term:
+ <P></P>
+<DIV CLASS="displaymath"><!-- MATH
+ \begin{equation}
+\frac{\partial E}{\partial \omega_{ji}}  = \frac{\partial E}{\partial y_i} \underbrace{\frac{\partial y_i}{\partial v_i}}_{\Theta^\prime} \frac{\partial v_i}{\partial \omega_{ji}}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 8.36ex; vertical-align: -5.02ex; " SRC="img52.svg"
+ ALT="$\displaystyle \frac{\partial E}{\partial \omega_{ji}} = \frac{\partial E}{\part...
+...l y_i}{\partial v_i}}_{\Theta^\prime} \frac{\partial v_i}{\partial \omega_{ji}}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">20</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+where <!-- MATH
+ $\Theta^\prime$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.02ex; vertical-align: -0.09ex; " SRC="img53.svg"
+ ALT="$\Theta^\prime$"></SPAN> is simply the derivative of the activation function <SPAN CLASS="MATH"><IMG
+ STYLE="height: 1.91ex; vertical-align: -0.09ex; " SRC="img50.svg"
+ ALT="$\Theta$"></SPAN>. Consequently the
+ weight change at the output is now calculated as:
+<P></P>
+<DIV CLASS="displaymath"><!-- MATH
+ \begin{equation}
+\Delta\omega_{ji} = \mu \cdot \Theta^\prime(y_i) \cdot y_j \cdot e_i
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.76ex; vertical-align: -0.72ex; " SRC="img54.svg"
+ ALT="$\displaystyle \Delta\omega_{ji} = \mu \cdot \Theta^\prime(y_i) \cdot y_j \cdot e_i$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">21</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+and the internal error as:
+<P></P>
+<DIV CLASS="displaymath"><!-- MATH
+ \begin{equation}
+\Delta\omega_{kj} = \mu \cdot \Theta^\prime(y_j) \cdot y_k \cdot \underbrace{\sum_i e_i \omega_{ji}}_{e_j}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 8.95ex; vertical-align: -6.34ex; " SRC="img55.svg"
+ ALT="$\displaystyle \Delta\omega_{kj} = \mu \cdot \Theta^\prime(y_j) \cdot y_k \cdot \underbrace{\sum_i e_i \omega_{ji}}_{e_j}$"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">22</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+
+<P>
+Strictly, the activation function needs to be differentiable. However,
+it turned out that the one way rectifier (Rectifiying Linear Unit = ReLU)
+works extremely well (<A
+ HREF="deep-learning-analytics.html#Fukushima1975">Fukushima, 1975</A>):
+<P></P>
+<DIV CLASS="displaymath"><!-- MATH
+ \begin{equation}
+\Theta(v) =
+  \begin{cases}
+    0, & \text{if}\ v < 0 \\
+    v, & \text{otherwise}
+  \end{cases}
+\end{equation}
+ -->
+<TABLE CLASS="equation" >
+<TR>
+<TD  style="text-align:center;"><SPAN CLASS="MATH"><IMG
+ STYLE="height: 8.50ex; " SRC="img56.svg"
+ ALT="\begin{displaymath}\Theta(v) =
+\begin{cases}
+0, &amp; \text{if}\ v &lt; 0 \\
+v, &amp; \text{otherwise}
+\end{cases}\end{displaymath}"></SPAN></TD>
+<TD  CLASS="eqno" style="text-align:right">
+(<SPAN CLASS="arabic">23</SPAN>)</TD></TR>
+</TABLE></DIV>
+<P></P>
+Its derivative has no definite solution at its origin so that one needs
+to decide if the derivative is zero there or one.
+Other popular activation functions are <!-- MATH
+ $\Theta(v)=\tanh(v)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 2.62ex; vertical-align: -0.66ex; " SRC="img57.svg"
+ ALT="$\Theta(v)=\tanh(v)$"></SPAN> or <!-- MATH
+ $\Theta(v)=\frac{1}{1+e^{-v}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ STYLE="height: 3.15ex; vertical-align: -1.03ex; " SRC="img58.svg"
+ ALT="$\Theta(v)=\frac{1}{1+e^{-v}}$"></SPAN>.
+
+<P>
+
+<P>
+<H2><A ID="SECTIONREF">References</A>
+</H2>
+
+<DL class="COMPACT">
+<DT><A ID="Fukushima1975">
+Fukushima, K. (1975).
+</A>
+<DD> Cognitron: A self-organizing multilayered neural network.
+<BR> <EM>Biol. Cybern.</EM>, 20(3–4):121–136.
+
+<BR>
+<P>
+<DT><A ID="Rosenblatt58">
+Rosenblatt, F. (1958).
+</A>
+<DD> The perceptron: a probabilistic model for information storage and
+  organization in the brain.
+<BR> <EM>Psychol. Rev.</EM>, 65(6):386&ndash;408.
+
+<BR>
+<P>
+<DT><A ID="rumelhart1986learning">
+Rumelhart, D.&nbsp;E., Hinton, G.&nbsp;E., and Williams, R.&nbsp;J. (1986).
+</A>
+<DD> Learning representations by back-propagating errors.
+<BR> <EM>nature</EM>, 323(6088):533&ndash;536.
+
+<BR>
+<P>
+<DT><A ID="Widrow60">
+Widrow, G. and Hoff, M. (1960).
+</A>
+<DD> Adaptive switching circuits.
+<BR> <EM>IRE WESCON Convention Record</EM>, 4:96&ndash;104.
+
+<BR>
+<P>
+</DL>
+
+<P>
+
+<H1><A ID="SECTION00090000000000000000">
+About this document ...</A>
+</H1>
+ <STRONG>Deep learning</STRONG><P>
+This document was generated using the
+<A HREF="http://www.latex2html.org/">LaTeX2HTML</A> translator Version 2021.2 (Released July 1, 2021)
+<P>
+The command line arguments were: <BR>
+ <kbd>latex2html deep-learning-analytics -split 1 -dir docs -t 'Deep learning analytics' -address '<p><br /><a href="https://github.com/berndporr/deep-learning-analytics">github / contact</a><br /></p>'</kbd>
+<P>
+The translation was initiated on 2023-01-06
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<IMG WIDTH="81" HEIGHT="24" ALT="next_inactive" SRC="nx_grp_g.png"> 
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up_g.png"> 
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev_g.png">   
+<BR></DIV>
+<!--End of Navigation Panel-->
 <ADDRESS>
 <p><br /><a href="https://github.com/berndporr/deep-learning-analytics">github / contact</a><br /></p>
 </ADDRESS>

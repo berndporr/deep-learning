@@ -3,75 +3,75 @@
 
 
 $key = q/chainrule/;
-$external_labels{$key} = "$URL/" . q|node5.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/cite_Fukushima1975/;
-$external_labels{$key} = "$URL/" . q|node8.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/cite_Rosenblatt58/;
-$external_labels{$key} = "$URL/" . q|node8.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/cite_Widrow60/;
-$external_labels{$key} = "$URL/" . q|node8.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/cite_rumelhart1986learning/;
-$external_labels{$key} = "$URL/" . q|node8.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/dltrick/;
-$external_labels{$key} = "$URL/" . q|node6.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/graddes/;
-$external_labels{$key} = "$URL/" . q|node4.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/gradint/;
-$external_labels{$key} = "$URL/" . q|node6.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/gradintback/;
-$external_labels{$key} = "$URL/" . q|node6.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/inductive/;
-$external_labels{$key} = "$URL/" . q|node1.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/learningrule/;
-$external_labels{$key} = "$URL/" . q|node5.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/linear_sum/;
-$external_labels{$key} = "$URL/" . q|node2.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/multi_layer/;
-$external_labels{$key} = "$URL/" . q|node6.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/nonlin/;
-$external_labels{$key} = "$URL/" . q|node6.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/nonlinear_sum/;
-$external_labels{$key} = "$URL/" . q|node7.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/one_layer/;
-$external_labels{$key} = "$URL/" . q|node2.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/output_error/;
-$external_labels{$key} = "$URL/" . q|node3.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 $key = q/quaderr/;
-$external_labels{$key} = "$URL/" . q|node3.html|; 
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
 1;

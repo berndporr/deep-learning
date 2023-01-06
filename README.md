@@ -2,8 +2,7 @@
 
 ![alt tag](multi_layer.png)
 
-The deep learning analytics showing the partial
-derivative tricks.
+A writeup of the core math of Deep Learning.
 
 [PDF](<./deep-learning-analytics.pdf>)
 
