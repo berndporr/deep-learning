@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{amsmath}
+\usepackage{natbib}
 \hypersetup{%
     pdfborder = {0 0 0}
 }
@@ -23,17 +24,21 @@
 
 \maketitle
 
-\section{Inductive learning with Deep Learning}
+\section{Motivation}
 We have a dataset $\vec{x}_1, \ldots, \vec{x}_N$ which should be converted
 via the function
 \begin{equation}
   \vec{y}=f(\vec{x}) \label{inductive}
 \end{equation}
-into $\vec{y}$.  The goal is to learn this function with the help of
+into $\vec{y}$. The goal is to learn this function with the help of
 examples $\vec{x}_1,\vec{y}_1$; $\vec{x}_2,\vec{y}_2; \ldots$.
 
 The following sections show how learning of $f$ with the help
 fo examples can be achieved. This is called ``inductive learning''.
+
+We 1st introduce a linear neuron, then deriving the math for a linear deep
+network and finally introducing non-linearities into the deep network.
+This allows to introduce the math in a more gradual way.
 
 \section{Linear neuron}
 
@@ -45,7 +50,7 @@ fo examples can be achieved. This is called ``inductive learning''.
 \label{one_layer}}
 \end{figure}
 
-Fig.~\ref{one_layer}A shows a neuron in a single layer.
+Fig.~\ref{one_layer}A shows a neuron in a single layer \citep{Rosenblatt58}.
 Its activation is $y(n)$ and is the $i$th neurn in this layer.
 $n$ is the current time-stamp. The input activity to the neuron $x_j(n) =
 y_j(n)$ is weighted by $\omega_{ji}$ and summed up to:
@@ -97,7 +102,7 @@ $\omega_{ji}$.  We simply insert Eq.~\ref{linear_sum},
 \end{eqnarray}
 where $\mu << 1$ is the learning rate or the ``step change''. The
 learning rule Eq.~\ref{learningrule} is simply a multiplication of the
-input activity $y_j(n)$ with the error $e_i(n)$.
+input activity $y_j(n)$ with the error $e_i(n)$ \citep{Widrow60}.
 
 
 \section{Multi-layer network: error backpropagation and learning rule}
@@ -105,7 +110,7 @@ input activity $y_j(n)$ with the error $e_i(n)$.
 \begin{center}
 \mbox{\includegraphics[width=\textwidth]{multi_layer}}
 \end{center}
-\caption{Mehrschichtiges Feedforward Netz
+\caption{Multi-layer or deep neural network
 \label{multi_layer}}
 \end{figure}
 
@@ -150,7 +155,7 @@ The change of the internal weight $\omega_{kj}$ leads then to:
 where $e_j$ is the internal error and we can now use this recipe to
 calculate all internal errors.  This is called \textsl{error
   backpropagation} which now allows to establish networks with an
-arbitrary number of layers.
+arbitrary number of layers \citep{Widrow60,rumelhart1986learning}.
 
 \begin{figure}[!hbt]
 \begin{center}
@@ -191,7 +196,7 @@ and the internal error as:
 
 Strictly, the activation function needs to be differentiable. However,
 it turned out that the one way rectifier (Rectifiying Linear Unit = ReLU)
-works extremely well:
+works extremely well \citep{Fukushima1975}:
 \begin{equation}
   \Theta(v) =
   \begin{cases}
@@ -203,7 +208,8 @@ Its derivative has no definite solution at its origin so that one needs
 to decide if the derivative is zero there or one.
 Other popular activation functions are $\Theta(v)=\tanh(v)$ or $\Theta(v)=\frac{1}{1+e^{-v}}$.
 
-
+\bibliographystyle{apalike}
+\bibliography{lit}
 
 
 \end{document}
