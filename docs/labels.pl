@@ -118,7 +118,7 @@ $external_latex_labels{$key} = q|2 Multi-layer or deep neural network |;
 $noresave{$key} = "$nosave";
 
 $key = q/nonlin/;
-$external_latex_labels{$key} = q|3 Neuron mit nichtlinearer Characteristik |; 
+$external_latex_labels{$key} = q|3 Non-linear neuron |; 
 $noresave{$key} = "$nosave";
 
 $key = q/nonlinear_sum/;
