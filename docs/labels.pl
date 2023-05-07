@@ -14,6 +14,10 @@ $key = q/cite_Rosenblatt58/;
 $external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
+$key = q/cite_Widrow1990/;
+$external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
+$noresave{$key} = "$nosave";
+
 $key = q/cite_Widrow60/;
 $external_labels{$key} = "$URL/" . q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";

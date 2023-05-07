@@ -14,6 +14,10 @@ $key = q/cite_Rosenblatt58/;
 $ref_files{$key} = "$dir".q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";
 
+$key = q/cite_Widrow1990/;
+$ref_files{$key} = "$dir".q|deep-learning-analytics.html|; 
+$noresave{$key} = "$nosave";
+
 $key = q/cite_Widrow60/;
 $ref_files{$key} = "$dir".q|deep-learning-analytics.html|; 
 $noresave{$key} = "$nosave";

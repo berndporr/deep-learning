@@ -14,7 +14,13 @@ Rosenblatt, F. (1958).
 \bibitem[Rumelhart et~al., 1986]{rumelhart1986learning}
 Rumelhart, D.~E., Hinton, G.~E., and Williams, R.~J. (1986).
 \newblock Learning representations by back-propagating errors.
-\newblock {\em nature}, 323(6088):533--536.
+\newblock {\em Nature}, 323(6088):533--536.
+
+\bibitem[Widrow and Lehr, 1990]{Widrow1990}
+Widrow, B. and Lehr, M. (1990).
+\newblock 30 years of adaptive neural networks: perceptron, madaline, and
+  backpropagation.
+\newblock {\em Proceedings of the IEEE}, 78(9):1415--1442.
 
 \bibitem[Widrow and Hoff, 1960]{Widrow60}
 Widrow, G. and Hoff, M. (1960).
